@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/h-harsh/social-media-backend#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.13.5"
   }
 }
