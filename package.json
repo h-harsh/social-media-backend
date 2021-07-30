@@ -1,0 +1,23 @@
+{
+  "name": "social-media-backend",
+  "version": "1.0.0",
+  "description": "Backend for social media app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/h-harsh/social-media-backend.git"
+  },
+  "author": "\"harsh\"",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/h-harsh/social-media-backend/issues"
+  },
+  "homepage": "https://github.com/h-harsh/social-media-backend#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
