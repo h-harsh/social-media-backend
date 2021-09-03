@@ -4,10 +4,7 @@ const PostsSchema = mongoose.Schema({
   author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   authorName:String,
   text: String,
-  image: {
-    data: Buffer,
-    contentType: String,
-  },
+  image: String,
   likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   comments: [
     {
