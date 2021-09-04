@@ -21,6 +21,7 @@ app.use("/post", post);
 app.use("/friends", friends);
 app.use("/feed", feed);
 app.use("/notifications", notifications);
+app.use('/uploads', express.static('uploads'));
 
 app.get("/", (req, res) => {
   res.send("hey welcome to Fine-socials server !");
