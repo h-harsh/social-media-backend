@@ -14,7 +14,6 @@ const secret =
 
 // All user fetch route
 router.route("/").get(authVerify, async (req, res) => {
-  console.log("Hello user all fetch route");
   const allUsers = await User.find({});
   res.json({ message: "all user found success", allUsers: allUsers });
 });
@@ -105,9 +104,10 @@ router
   .post(authVerify, upload.single("profile-image"), async (req, res) => {
     try {
       const {userId} = req.user;
+      const token = req.token;
       console.log(req.file)
       const currentUser = await User.findOneAndUpdate({_id:userId},{profilePicture:req.file.path}, {new: true} )
-      res.json({ message: "pic saved", user: currentUser });
+      res.json({ message: "pic saved", user: currentUser, token:token });
     } catch (error) {
       res.json({ message: error.message });
     }
