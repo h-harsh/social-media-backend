@@ -4,21 +4,35 @@ const router = express.Router();
 const { authVerify } = require("../utils/authVerify");
 const { User } = require("../Models/user.model");
 const { Posts } = require("../Models/posts.model");
+const multer = require("multer");
 
-// app.use(authVerify)
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./uploads/");
+  },
+  filename: function (req, file, cb) {
+    // cb(null, new Date().toString() + file.originalname);
+    cb(null, new Date().toISOString().replace(/:/g, "-") + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 router
-  .route("/new")
+  .route("/new/:text")
   // Create a post
-  .post(authVerify, async (req, res) => {
+  .post(authVerify, upload.single("post-image"), async (req, res) => {
     try {
       const { userId } = req.user;
-      const postData = req.body;
+      // const postData = req.body;
+      console.log(req.file);
+      const { text } = req.params;
       const currentUser = await User.findById(userId);
       const NewPost = new Posts({
-        ...postData,
+        text: text,
         author: userId,
         authorName: currentUser.fullName,
+        image: req.file.path,
       });
       await NewPost.save();
       currentUser.posts.push(NewPost._id);
@@ -83,8 +97,8 @@ router.route("/comment/:postId").post(authVerify, async (req, res) => {
   const { postId } = req.params;
   const { userId } = req.user;
   const { comment } = req.body;
-  const currentUser = await User.findById(userId)
-  
+  const currentUser = await User.findById(userId);
+
   const currentPost = await Posts.findById(postId);
   currentPost.comments.push({
     user: userId,
@@ -97,6 +111,21 @@ router.route("/comment/:postId").post(authVerify, async (req, res) => {
     commentsData: currentPost.comments,
     postId,
   });
+});
+
+router.route("/delete/:postId").delete(authVerify, async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const { userId } = req.user;
+    const currentPost = await Posts.findById(postId);
+    const delPost = await Posts.findByIdAndDelete(postId);
+    const currentUser = await User.findById(userId);
+    await currentUser.posts.pull(postId);
+    await currentUser.save();
+    res.json({status:"success", newPost:currentPost})
+  } catch (error) {
+    res.json({success:"false", error:error.message})
+  }
 });
 
 module.exports = router;
