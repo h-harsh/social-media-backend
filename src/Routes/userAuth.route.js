@@ -107,6 +107,7 @@ router
       const token = req.token;
       console.log(req.file)
       const currentUser = await User.findOneAndUpdate({_id:userId},{profilePicture:req.file.path}, {new: true} )
+      console.log(currentUser)
       res.json({ message: "pic saved", user: currentUser, token:token });
     } catch (error) {
       res.json({ message: error.message });
