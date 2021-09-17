@@ -1,5 +1,5 @@
 const express = require("express");
-const { dbConnector } = require("./database/dbConnector");
+const { dbConnector } = require("./src/database/dbConnector");
 const cors = require("cors");
 const app = express();
 const port = 4000;
@@ -8,16 +8,18 @@ app.use(express.json());
 app.use(cors());
 
 
-const user = require("./Routes/userAuth.route");
-const post = require("./Routes/posts.route");
-const friends = require("./Routes/friends.route");
-const feed = require("./Routes/feed.route");
-const notifications = require("./Routes/notifications.route");
+const user = require("./src/Routes/userAuth.route");
+const post = require("./src/Routes/posts.route");
+const friends = require("./src/Routes/friends.route");
+const feed = require("./src/Routes/feed.route");
+const notifications = require("./src/Routes/notifications.route");
 
 dbConnector();
 
 app.use("/user", user);
 app.use("/post", post);
+
+
 app.use("/friends", friends);
 app.use("/feed", feed);
 app.use("/notifications", notifications);
